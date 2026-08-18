@@ -6,10 +6,9 @@ import com.librarysystem.model.User;
 import com.librarysystem.model.UserRole;
 import com.librarysystem.repository.BookRepository;
 import com.librarysystem.repository.StaffRepository;
-import com.librarysystem.repository.UserRepository;
+import com.librarysystem.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
@@ -19,16 +18,14 @@ public class DataInitializer implements CommandLineRunner {
     
     private final BookRepository bookRepository;
     private final StaffRepository staffRepository;
-    private final UserRepository userRepository;
-    private final PasswordEncoder passwordEncoder;
+    private final UserService userService;
     
     @Autowired
     public DataInitializer(BookRepository bookRepository, StaffRepository staffRepository, 
-                          UserRepository userRepository, PasswordEncoder passwordEncoder) {
+                          UserService userService) {
         this.bookRepository = bookRepository;
         this.staffRepository = staffRepository;
-        this.userRepository = userRepository;
-        this.passwordEncoder = passwordEncoder;
+        this.userService = userService;
     }
     
     @Override
@@ -41,7 +38,7 @@ public class DataInitializer implements CommandLineRunner {
             initializeStaff();
         }
         
-        if (userRepository.count() == 0) {
+        if (userService.countUsers() == 0) {
             initializeUsers();
         }
     }
@@ -108,12 +105,10 @@ public class DataInitializer implements CommandLineRunner {
     private void initializeUsers() {
         User admin = new User("Admin", "User", "admin@libraryse.com", "admin123");
         admin.setRole(UserRole.ADMIN);
-        admin.setPassword(passwordEncoder.encode(admin.getPassword()));
-        userRepository.save(admin);
+        userService.saveUser(admin);
         
         User regularUser = new User("John", "Doe", "john.doe@example.com", "password123");
         regularUser.setRole(UserRole.USER);
-        regularUser.setPassword(passwordEncoder.encode(regularUser.getPassword()));
-        userRepository.save(regularUser);
+        userService.saveUser(regularUser);
     }
 }

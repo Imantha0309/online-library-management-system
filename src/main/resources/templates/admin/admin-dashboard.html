@@ -5,22 +5,24 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Dashboard - LibrarySE</title>
     <link rel="stylesheet" th:href="@{/css/style.css}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
 </head>
-<body>
-    <header>
+<body class="dark-theme">
+    <header class="site-header">
         <nav class="navbar">
-            <div class="logo">LibrarySE</div>
+            <div class="logo">Library<span class="logo-accent">SE</span></div>
             <ul class="nav-links">
                 <li><a th:href="@{/}">Home</a></li>
                 <li><a th:href="@{/books}">Books</a></li>
                 <li><a th:href="@{/staff}">Staff</a></li>
-                <li><a th:href="@{/admin}" sec:authorize="hasRole('ADMIN')">Admin</a></li>
-                <li>
-                    <form th:action="@{/logout}" method="post" sec:authorize="isAuthenticated()">
-                        <button type="submit" class="btn btn-outline">Logout</button>
-                    </form>
-                </li>
+                <li><a th:href="@{/admin}" class="nav-active" sec:authorize="hasRole('ADMIN')">Admin</a></li>
             </ul>
+            <div class="nav-actions">
+                <form th:action="@{/logout}" method="post" sec:authorize="isAuthenticated()" style="display:inline;">
+                    <button type="submit" class="btn-ghost">Logout</button>
+                </form>
+            </div>
         </nav>
     </header>
 
@@ -43,19 +45,19 @@
                 </div>
 
                 <div class="card" style="margin-top: 2rem;">
-                    <h3>Quick Stats</h3>
+                    <h3 style="color: var(--text-primary); margin-bottom: 1rem;">Quick Stats</h3>
                     <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; margin-top: 1rem;">
-                        <div style="text-align: center; padding: 1rem; background-color: #f8f9fa; border-radius: 8px;">
-                            <h4 style="color: #A04747; margin-bottom: 0.5rem;">Total Books</h4>
-                            <p style="font-size: 2rem; font-weight: bold; color: #343131;" id="totalBooks">-</p>
+                        <div style="text-align: center; padding: 1.5rem; background: rgba(201,168,76,0.08); border: 1px solid var(--border); border-radius: 10px;">
+                            <h4 style="color: var(--gold); margin-bottom: 0.5rem; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 1px;">Total Books</h4>
+                            <p style="font-size: 2.2rem; font-weight: bold; color: var(--text-primary);" id="totalBooks">-</p>
                         </div>
-                        <div style="text-align: center; padding: 1rem; background-color: #f8f9fa; border-radius: 8px;">
-                            <h4 style="color: #A04747; margin-bottom: 0.5rem;">Available Books</h4>
-                            <p style="font-size: 2rem; font-weight: bold; color: #343131;" id="availableBooks">-</p>
+                        <div style="text-align: center; padding: 1.5rem; background: rgba(201,168,76,0.08); border: 1px solid var(--border); border-radius: 10px;">
+                            <h4 style="color: var(--gold); margin-bottom: 0.5rem; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 1px;">Available Books</h4>
+                            <p style="font-size: 2.2rem; font-weight: bold; color: var(--text-primary);" id="availableBooks">-</p>
                         </div>
-                        <div style="text-align: center; padding: 1rem; background-color: #f8f9fa; border-radius: 8px;">
-                            <h4 style="color: #A04747; margin-bottom: 0.5rem;">Total Staff</h4>
-                            <p style="font-size: 2rem; font-weight: bold; color: #343131;" id="totalStaff">-</p>
+                        <div style="text-align: center; padding: 1.5rem; background: rgba(201,168,76,0.08); border: 1px solid var(--border); border-radius: 10px;">
+                            <h4 style="color: var(--gold); margin-bottom: 0.5rem; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 1px;">Total Staff</h4>
+                            <p style="font-size: 2.2rem; font-weight: bold; color: var(--text-primary);" id="totalStaff">-</p>
                         </div>
                     </div>
                 </div>
@@ -63,9 +65,9 @@
         </div>
     </main>
 
-    <footer>
-        <div class="container">
-            <p>&copy; 2024 LibrarySE. All rights reserved.</p>
+    <footer class="site-footer">
+        <div class="container footer-inner">
+            <p class="footer-copy">&copy; 2024 LibrarySE. All rights reserved.</p>
         </div>
     </footer>
 

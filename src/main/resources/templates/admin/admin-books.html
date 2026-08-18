@@ -5,22 +5,24 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Books - LibrarySE</title>
     <link rel="stylesheet" th:href="@{/css/style.css}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
 </head>
-<body>
-    <header>
+<body class="dark-theme">
+    <header class="site-header">
         <nav class="navbar">
-            <div class="logo">LibrarySE</div>
+            <div class="logo">Library<span class="logo-accent">SE</span></div>
             <ul class="nav-links">
                 <li><a th:href="@{/}">Home</a></li>
                 <li><a th:href="@{/books}">Books</a></li>
                 <li><a th:href="@{/staff}">Staff</a></li>
-                <li><a th:href="@{/admin}" sec:authorize="hasRole('ADMIN')">Admin</a></li>
-                <li>
-                    <form th:action="@{/logout}" method="post" sec:authorize="isAuthenticated()">
-                        <button type="submit" class="btn btn-outline">Logout</button>
-                    </form>
-                </li>
+                <li><a th:href="@{/admin}" class="nav-active" sec:authorize="hasRole('ADMIN')">Admin</a></li>
             </ul>
+            <div class="nav-actions">
+                <form th:action="@{/logout}" method="post" sec:authorize="isAuthenticated()" style="display:inline;">
+                    <button type="submit" class="btn-ghost">Logout</button>
+                </form>
+            </div>
         </nav>
     </header>
 
@@ -137,9 +139,9 @@
         </div>
     </div>
 
-    <footer>
-        <div class="container">
-            <p>&copy; 2024 LibrarySE. All rights reserved.</p>
+    <footer class="site-footer">
+        <div class="container footer-inner">
+            <p class="footer-copy">&copy; 2024 LibrarySE. All rights reserved.</p>
         </div>
     </footer>
 
