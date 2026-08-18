@@ -3,89 +3,170 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>LibrarySE - Your Digital Library</title>
+    <title>LibrarySE - Discover. Read. Learn. Grow.</title>
     <link rel="stylesheet" th:href="@{/css/style.css}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
 </head>
-<body>
-    <header>
+<body class="dark-theme">
+
+    <!-- NAV -->
+    <header class="site-header">
         <nav class="navbar">
-            <div class="logo">LibrarySE</div>
+            <div class="logo">Library<span class="logo-accent">SE</span></div>
             <ul class="nav-links">
-                <li><a th:href="@{/}">Home</a></li>
+                <li><a href="#" class="nav-active">Home</a></li>
                 <li><a th:href="@{/books}">Books</a></li>
                 <li><a th:href="@{/staff}">Staff</a></li>
                 <li><a th:href="@{/admin}" sec:authorize="hasRole('ADMIN')">Admin</a></li>
-                <li><a th:href="@{/login}" sec:authorize="!isAuthenticated()">Login</a></li>
-                <li>
-                    <form th:action="@{/logout}" method="post" sec:authorize="isAuthenticated()">
-                        <button type="submit" class="btn btn-outline">Logout</button>
-                    </form>
-                </li>
             </ul>
+            <div class="nav-actions">
+                <a th:href="@{/login}" sec:authorize="!isAuthenticated()" class="btn-ghost">Login</a>
+                <a th:href="@{/auth/signup}" sec:authorize="!isAuthenticated()" class="btn-gold">Sign Up</a>
+                <form th:action="@{/logout}" method="post" sec:authorize="isAuthenticated()" style="display:inline;">
+                    <button type="submit" class="btn-ghost">Logout</button>
+                </form>
+            </div>
         </nav>
     </header>
 
-    <main>
-        <section class="hero">
-            <div class="container">
-                <h1>Welcome to <span class="accent">LibrarySE</span></h1>
-                <p>Discover, explore, and manage your digital library collection with ease</p>
-                <div>
-                    <a th:href="@{/books}" class="btn">Browse Books</a>
-                    <a th:href="@{/staff}" class="btn btn-secondary">Meet Our Staff</a>
-                </div>
-            </div>
-        </section>
+    <!-- HERO -->
+    <section class="hero">
+        <div class="hero-bg"></div>
+        <div class="hero-content">
+            <div class="hero-left">
+                <p class="hero-eyebrow">WELCOME TO LIBRARYSE</p>
+                <h1 class="hero-title">
+                    Discover. Read.<br>
+                    <span class="hero-title-gold">Learn. Grow.</span>
+                </h1>
+                <p class="hero-subtitle">Your gateway to knowledge and imagination.<br>Explore thousands of books and resources.</p>
 
-        <section class="section">
-            <div class="container">
-                <h2>Why Choose <span class="highlight">LibrarySE</span>?</h2>
-                <div class="card-grid">
-                    <div class="card">
-                        <h3>📚 Extensive Collection</h3>
-                        <p>Access thousands of books across various genres and subjects. From classic literature to modern bestsellers.</p>
-                    </div>
-                    <div class="card">
-                        <h3>🔍 Advanced Search</h3>
-                        <p>Find exactly what you're looking for with our powerful search and filtering capabilities.</p>
-                    </div>
-                    <div class="card">
-                        <h3>👥 Expert Staff</h3>
-                        <p>Our knowledgeable librarians are here to help you discover new books and answer your questions.</p>
-                    </div>
-                    <div class="card">
-                        <h3>⚡ Easy Management</h3>
-                        <p>Streamlined interface for both users and administrators to manage the library efficiently.</p>
-                    </div>
-                </div>
-            </div>
-        </section>
+                <form th:action="@{/books}" method="get" class="hero-search">
+                    <input type="text" name="search" placeholder="Search books, authors, categories..." class="hero-search-input">
+                    <button type="submit" class="hero-search-btn">&#128269;</button>
+                </form>
 
-        <section class="section" style="background-color: #f8f9fa;">
-            <div class="container">
-                <h2>Library <span class="highlight">Hours</span></h2>
-                <div class="card-grid">
-                    <div class="card">
-                        <h3>Monday - Friday</h3>
-                        <p><strong>9:00 AM - 8:00 PM</strong></p>
+                <div class="hero-cta">
+                    <a th:href="@{/books}" class="btn-gold">Browse Books &nbsp;&rarr;</a>
+                    <a th:href="@{/books}" class="btn-dark">View Categories &nbsp;&#9783;</a>
+                </div>
+
+                <div class="hero-members">
+                    <div class="member-avatars">
+                        <span class="avatar av1">A</span>
+                        <span class="avatar av2">B</span>
+                        <span class="avatar av3">C</span>
                     </div>
-                    <div class="card">
-                        <h3>Saturday</h3>
-                        <p><strong>10:00 AM - 6:00 PM</strong></p>
-                    </div>
-                    <div class="card">
-                        <h3>Sunday</h3>
-                        <p><strong>12:00 PM - 5:00 PM</strong></p>
+                    <div class="member-text">
+                        <strong>2.5K+</strong><br>
+                        <span>Active Members</span>
                     </div>
                 </div>
             </div>
-        </section>
-    </main>
 
-    <footer>
+            <div class="hero-right">
+                <div class="stats-panel">
+                    <div class="stat-item">
+                        <span class="stat-icon">&#128218;</span>
+                        <div class="stat-info">
+                            <strong>15,000+</strong>
+                            <span>Books Available</span>
+                        </div>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-icon">&#128101;</span>
+                        <div class="stat-info">
+                            <strong>2,500+</strong>
+                            <span>Active Members</span>
+                        </div>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-icon">&#9997;</span>
+                        <div class="stat-info">
+                            <strong>1,200+</strong>
+                            <span>Authors</span>
+                        </div>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-icon">&#128196;</span>
+                        <div class="stat-info">
+                            <strong>850+</strong>
+                            <span>Books Borrowed Today</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FEATURES -->
+    <section class="features-section">
         <div class="container">
-            <p>&copy; 2024 LibrarySE. All rights reserved.</p>
+            <p class="section-eyebrow">WHY CHOOSE US</p>
+            <h2 class="section-title">Everything You Need in <span class="text-gold">One Place</span></h2>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">&#128218;</div>
+                    <h3>Extensive Collection</h3>
+                    <p>Access thousands of books across various genres and subjects. From classic literature to modern bestsellers.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">&#128269;</div>
+                    <h3>Advanced Search</h3>
+                    <p>Find exactly what you're looking for with our powerful search and filtering capabilities.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">&#128101;</div>
+                    <h3>Expert Staff</h3>
+                    <p>Our knowledgeable librarians are here to help you discover new books and answer your questions.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">&#9889;</div>
+                    <h3>Easy Management</h3>
+                    <p>Streamlined interface for both users and administrators to manage the library efficiently.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- HOURS -->
+    <section class="hours-section">
+        <div class="container">
+            <p class="section-eyebrow">VISIT US</p>
+            <h2 class="section-title">Library <span class="text-gold">Hours</span></h2>
+            <div class="hours-grid">
+                <div class="hours-card">
+                    <h3>Monday – Friday</h3>
+                    <p class="hours-time">9:00 AM – 8:00 PM</p>
+                </div>
+                <div class="hours-card hours-card-featured">
+                    <h3>Saturday</h3>
+                    <p class="hours-time">10:00 AM – 6:00 PM</p>
+                </div>
+                <div class="hours-card">
+                    <h3>Sunday</h3>
+                    <p class="hours-time">12:00 PM – 5:00 PM</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="site-footer">
+        <div class="container footer-inner">
+            <div class="footer-brand">
+                <div class="logo">Library<span class="logo-accent">SE</span></div>
+                <p>Your gateway to knowledge and imagination.</p>
+            </div>
+            <div class="footer-links">
+                <a th:href="@{/books}">Books</a>
+                <a th:href="@{/staff}">Staff</a>
+                <a th:href="@{/login}">Login</a>
+            </div>
+            <p class="footer-copy">&copy; 2024 LibrarySE. All rights reserved.</p>
         </div>
     </footer>
+
 </body>
 </html>

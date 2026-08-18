@@ -5,23 +5,26 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Books - LibrarySE</title>
     <link rel="stylesheet" th:href="@{/css/style.css}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
 </head>
-<body>
-    <header>
+<body class="dark-theme">
+    <header class="site-header">
         <nav class="navbar">
-            <div class="logo">LibrarySE</div>
+            <div class="logo">Library<span class="logo-accent">SE</span></div>
             <ul class="nav-links">
                 <li><a th:href="@{/}">Home</a></li>
-                <li><a th:href="@{/books}">Books</a></li>
+                <li><a th:href="@{/books}" class="nav-active">Books</a></li>
                 <li><a th:href="@{/staff}">Staff</a></li>
                 <li><a th:href="@{/admin}" sec:authorize="hasRole('ADMIN')">Admin</a></li>
-                <li><a th:href="@{/login}" sec:authorize="!isAuthenticated()">Login</a></li>
-                <li>
-                    <form th:action="@{/logout}" method="post" sec:authorize="isAuthenticated()">
-                        <button type="submit" class="btn btn-outline">Logout</button>
-                    </form>
-                </li>
             </ul>
+            <div class="nav-actions">
+                <a th:href="@{/login}" sec:authorize="!isAuthenticated()" class="btn-ghost">Login</a>
+                <a th:href="@{/auth/signup}" sec:authorize="!isAuthenticated()" class="btn-gold">Sign Up</a>
+                <form th:action="@{/logout}" method="post" sec:authorize="isAuthenticated()" style="display:inline;">
+                    <button type="submit" class="btn-ghost">Logout</button>
+                </form>
+            </div>
         </nav>
     </header>
 
@@ -94,9 +97,18 @@
         </div>
     </main>
 
-    <footer>
-        <div class="container">
-            <p>&copy; 2024 LibrarySE. All rights reserved.</p>
+    <footer class="site-footer">
+        <div class="container footer-inner">
+            <div class="footer-brand">
+                <div class="logo">Library<span class="logo-accent">SE</span></div>
+                <p>Your gateway to knowledge and imagination.</p>
+            </div>
+            <div class="footer-links">
+                <a th:href="@{/books}">Books</a>
+                <a th:href="@{/staff}">Staff</a>
+                <a th:href="@{/login}">Login</a>
+            </div>
+            <p class="footer-copy">&copy; 2024 LibrarySE. All rights reserved.</p>
         </div>
     </footer>
 

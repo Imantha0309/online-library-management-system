@@ -5,23 +5,26 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title th:text="${book.title} + ' - LibrarySE'">Book Details - LibrarySE</title>
     <link rel="stylesheet" th:href="@{/css/style.css}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
 </head>
-<body>
-    <header>
+<body class="dark-theme">
+    <header class="site-header">
         <nav class="navbar">
-            <div class="logo">LibrarySE</div>
+            <div class="logo">Library<span class="logo-accent">SE</span></div>
             <ul class="nav-links">
                 <li><a th:href="@{/}">Home</a></li>
-                <li><a th:href="@{/books}">Books</a></li>
+                <li><a th:href="@{/books}" class="nav-active">Books</a></li>
                 <li><a th:href="@{/staff}">Staff</a></li>
                 <li><a th:href="@{/admin}" sec:authorize="hasRole('ADMIN')">Admin</a></li>
-                <li><a th:href="@{/login}" sec:authorize="!isAuthenticated()">Login</a></li>
-                <li>
-                    <form th:action="@{/logout}" method="post" sec:authorize="isAuthenticated()">
-                        <button type="submit" class="btn btn-outline">Logout</button>
-                    </form>
-                </li>
             </ul>
+            <div class="nav-actions">
+                <a th:href="@{/login}" sec:authorize="!isAuthenticated()" class="btn-ghost">Login</a>
+                <a th:href="@{/auth/signup}" sec:authorize="!isAuthenticated()" class="btn-gold">Sign Up</a>
+                <form th:action="@{/logout}" method="post" sec:authorize="isAuthenticated()" style="display:inline;">
+                    <button type="submit" class="btn-ghost">Logout</button>
+                </form>
+            </div>
         </nav>
     </header>
 
@@ -52,7 +55,7 @@
 
                         <!-- Book Details -->
                         <div class="book-details">
-                            <h1 th:text="${book.title}" style="color: #343131; margin-bottom: 1rem;">Book Title</h1>
+                            <h1 th:text="${book.title}" style="color: var(--text-primary); font-family: 'Playfair Display', serif; margin-bottom: 1rem;">Book Title</h1>
                             
                             <div class="book-info">
                                 <div class="info-row">
@@ -99,67 +102,30 @@
         </div>
     </main>
 
-    <footer>
-        <div class="container">
-            <p>&copy; 2024 LibrarySE. All rights reserved.</p>
+    <footer class="site-footer">
+        <div class="container footer-inner">
+            <p class="footer-copy">&copy; 2024 LibrarySE. All rights reserved.</p>
         </div>
     </footer>
 
     <style>
-        .book-info {
-            background: #f8f9fa;
-            padding: 1.5rem;
-            border-radius: 8px;
+        .book-info, .book-description {
+            background: rgba(255,255,255,0.04);
+            border: 1px solid var(--border);
+            padding: 1.25rem;
+            border-radius: 10px;
             margin-bottom: 1rem;
         }
-        
-        .info-row {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 0.5rem 0;
-            border-bottom: 1px solid #e9ecef;
-        }
-        
-        .info-row:last-child {
-            border-bottom: none;
-        }
-        
-        .info-row strong {
-            color: #343131;
-            min-width: 120px;
-        }
-        
-        .book-description {
-            background: #f8f9fa;
-            padding: 1.5rem;
-            border-radius: 8px;
-        }
-        
-        .book-actions {
-            display: flex;
-            gap: 1rem;
-            flex-wrap: wrap;
-        }
-        
+        .info-row { display: flex; justify-content: space-between; align-items: center; padding: 0.5rem 0; border-bottom: 1px solid rgba(255,255,255,0.06); }
+        .info-row:last-child { border-bottom: none; }
+        .info-row strong { color: var(--text-muted); font-size: 0.85rem; min-width: 130px; }
+        .info-row span { color: var(--text-primary); }
+        .book-description h3 { color: var(--text-primary); margin-bottom: 0.75rem; }
+        .book-description p { color: var(--text-muted); line-height: 1.7; }
+        .book-actions { display: flex; gap: 1rem; flex-wrap: wrap; margin-top: 2rem; }
         @media (max-width: 768px) {
-            .book-details {
-                grid-template-columns: 1fr !important;
-            }
-            
-            .book-cover {
-                text-align: center;
-            }
-            
-            .info-row {
-                flex-direction: column;
-                align-items: flex-start;
-                gap: 0.5rem;
-            }
-            
-            .info-row strong {
-                min-width: auto;
-            }
+            div[style*="grid-template-columns: 1fr 2fr"] { grid-template-columns: 1fr !important; }
+            .info-row { flex-direction: column; align-items: flex-start; gap: 0.25rem; }
         }
     </style>
 </body>

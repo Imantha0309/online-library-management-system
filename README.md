@@ -15,6 +15,7 @@ A comprehensive Spring Boot web application for managing library operations incl
 - **Filtering**: Filter books by availability status
 - **Sorting**: Sort books by various criteria (title, author, publication date)
 - **Staff Directory**: Browse library staff members and their information
+- **User Registration**: Create an account to access the system
 - **Responsive Design**: Mobile-friendly interface
 
 ### Admin Features
@@ -27,9 +28,9 @@ A comprehensive Spring Boot web application for managing library operations incl
 
 ## Technology Stack
 
-- **Backend**: Spring Boot 3.5.7, Spring Security, Spring Data JPA
-- **Database**: Microsoft SQL Server with Windows Authentication
-- **Frontend**: Thymeleaf templates, CSS3, JavaScript
+- **Backend**: Spring Boot 3.5.7, Spring Security 6, Spring Data JPA
+- **Database**: H2 in-memory database (with H2 console at `/h2-console`)
+- **Frontend**: Thymeleaf templates, custom CSS, vanilla JavaScript
 - **Build Tool**: Maven
 - **Java Version**: 17
 
@@ -37,54 +38,35 @@ A comprehensive Spring Boot web application for managing library operations incl
 
 - Java 17 or higher
 - Maven 3.6+
-- Microsoft SQL Server (Express or higher)
 - IDE (IntelliJ IDEA, Eclipse, or VS Code)
-
-## Database Setup
-
-1. **SQL Server Configuration**:
-   - Ensure SQL Server is running
-   - Create database named `LibraryDB`
-   - Configure Windows Authentication
-   - Ensure `sqljdbc_auth.dll` is in system PATH
-
-2. **Database Tables**:
-   The application will automatically create the following tables:
-   - `libraryBook` - Stores book information
-   - `libraryStaff` - Stores staff member information
 
 ## Installation & Setup
 
 1. **Clone the Repository**:
    ```bash
    git clone <repository-url>
-   cd library-system
+   cd online-library-management-system
    ```
 
-2. **Configure Database**:
-   Update `src/main/resources/application.properties`:
-   ```properties
-   spring.datasource.url=jdbc:sqlserver://localhost\\IMA\\SQLEXPRESS;databaseName=LibraryDB;integratedSecurity=true
-   ```
-
-3. **Build the Application**:
+2. **Build the Application**:
    ```bash
    mvn clean install
    ```
 
-4. **Run the Application**:
+3. **Run the Application**:
    ```bash
    mvn spring-boot:run
    ```
 
-5. **Access the Application**:
+4. **Access the Application**:
    - Open browser and navigate to `http://localhost:8080`
-   - Admin login: `admin` / `admin123`
+   - Admin login: `admin@libraryse.com` / `admin123`
+   - User login: `john.doe@example.com` / `password123`
 
 ## Project Structure
 
 ```
-library-system/
+online-library-management-system/
 ├── src/
 │   ├── main/
 │   │   ├── java/com/librarysystem/
@@ -92,16 +74,23 @@ library-system/
 │   │   │   │   ├── HomeController.java
 │   │   │   │   ├── BookController.java
 │   │   │   │   ├── StaffController.java
-│   │   │   │   └── AdminController.java
+│   │   │   │   ├── AdminController.java
+│   │   │   │   ├── AdminBookController.java
+│   │   │   │   ├── AuthController.java
+│   │   │   │   └── LoginController.java
 │   │   │   ├── model/
 │   │   │   │   ├── Book.java
-│   │   │   │   └── Staff.java
+│   │   │   │   ├── Staff.java
+│   │   │   │   ├── User.java
+│   │   │   │   └── UserRole.java
 │   │   │   ├── repository/
 │   │   │   │   ├── BookRepository.java
-│   │   │   │   └── StaffRepository.java
+│   │   │   │   ├── StaffRepository.java
+│   │   │   │   └── UserRepository.java
 │   │   │   ├── service/
 │   │   │   │   ├── BookService.java
-│   │   │   │   └── StaffService.java
+│   │   │   │   ├── StaffService.java
+│   │   │   │   └── UserService.java
 │   │   │   ├── config/
 │   │   │   │   ├── SecurityConfig.java
 │   │   │   │   └── DataInitializer.java
@@ -110,11 +99,15 @@ library-system/
 │   │       ├── templates/
 │   │       │   ├── index.html
 │   │       │   ├── books.html
+│   │       │   ├── book-detail.html
 │   │       │   ├── staff.html
-│   │       │   ├── admin-dashboard.html
-│   │       │   ├── admin-books.html
-│   │       │   ├── admin-staff.html
-│   │       │   └── login.html
+│   │       │   ├── staff-detail.html
+│   │       │   ├── login.html
+│   │       │   ├── auth/signup.html
+│   │       │   └── admin/
+│   │       │       ├── admin-dashboard.html
+│   │       │       ├── admin-books.html
+│   │       │       └── admin-staff.html
 │   │       ├── static/css/style.css
 │   │       └── application.properties
 │   └── test/
@@ -131,7 +124,7 @@ library-system/
 - `GET /staff` - Staff listing
 - `GET /staff/{id}` - Staff details
 
-### Admin Endpoints
+### Admin Endpoints (require ADMIN role)
 - `GET /admin` - Admin dashboard
 - `GET /admin/books` - Book management
 - `POST /admin/books` - Create new book
@@ -141,24 +134,33 @@ library-system/
 - `POST /admin/staff` - Create new staff member
 - `PUT /admin/staff/{id}` - Update staff member
 - `DELETE /admin/staff/{id}` - Delete staff member
+- `GET /admin/stats` - Dashboard statistics
 
 ### Authentication
 - `GET /login` - Login page
 - `POST /login` - Process login
+- `GET /auth/signup` - Registration page
+- `POST /auth/signup` - Process registration
 - `POST /logout` - Logout
 
 ## Configuration
 
 ### Application Properties
 ```properties
-# Database Configuration
-spring.datasource.driver-class-name=com.microsoft.sqlserver.jdbc.SQLServerDriver
-spring.datasource.url=jdbc:sqlserver://localhost\\IMA\\SQLEXPRESS;databaseName=LibraryDB;integratedSecurity=true
+# Database Configuration (H2 in-memory)
+spring.datasource.driver-class-name=org.h2.Driver
+spring.datasource.url=jdbc:h2:mem:testdb
+spring.datasource.username=sa
+spring.datasource.password=password
 
 # JPA Configuration
-spring.jpa.hibernate.ddl-auto=validate
+spring.jpa.hibernate.ddl-auto=create-drop
 spring.jpa.show-sql=true
-spring.jpa.properties.hibernate.dialect=org.hibernate.dialect.SQLServerDialect
+spring.jpa.properties.hibernate.dialect=org.hibernate.dialect.H2Dialect
+
+# H2 Console
+spring.h2.console.enabled=true
+spring.h2.console.path=/h2-console
 
 # Server Configuration
 server.port=8080
@@ -173,15 +175,16 @@ The application uses a consistent color scheme:
 
 ## Sample Data
 
-The application includes sample data initialization:
+The application includes sample data initialization on first run:
 - **5 Sample Books**: Classic literature with realistic metadata
 - **5 Sample Staff Members**: Various library positions
+- **2 Users**: Admin and regular user accounts
 
 ## Security
 
-- **Admin Authentication**: Spring Security with in-memory user
+- **Authentication**: Spring Security with database-backed UserDetailsService
 - **Password Encryption**: BCrypt password encoding
-- **CSRF Protection**: Enabled for form submissions
+- **Role-Based Access**: USER and ADMIN roles
 - **Session Management**: Secure session handling
 
 ## Development
@@ -197,24 +200,7 @@ The application includes sample data initialization:
 - Update model classes with new fields
 - Modify repository interfaces for new queries
 - Update service layer for new business logic
-- Run application to apply schema changes
-
-## Troubleshooting
-
-### Common Issues
-
-1. **Database Connection Error**:
-   - Verify SQL Server is running
-   - Check Windows Authentication settings
-   - Ensure `sqljdbc_auth.dll` is in PATH
-
-2. **Login Issues**:
-   - Use default credentials: `admin` / `admin123`
-   - Check Spring Security configuration
-
-3. **Port Already in Use**:
-   - Change port in `application.properties`
-   - Or stop other applications using port 8080
+- Run application to apply schema changes (H2 in-memory, schema recreated on startup)
 
 ## Contributing
 
@@ -233,10 +219,7 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 For support and questions:
 - Create an issue in the repository
 - Contact the development team
-- Check the documentation
 
-
------
+---
 
 **Library Management System** - Built with Spring Boot and modern web technologies.
-"# online-library-website-with-fully-functionality" 
